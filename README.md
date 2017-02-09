@@ -1,6 +1,6 @@
-# cython wrapper np.array <-> cv::Mat
+# cython wrapper `np.array` <-> `cv::Mat`
 
-Implementation of cython wrapper to allow the convertion between a `numpy` array and a `cv::Mat` and the other way arround (`cv::Mat` to `numpy` array).
+Implementation of cython wrapper to allow the convertion between a `numpy.array` and a `cv::Mat` and the other way arround (`cv::Mat` to `numpy.array`).
 
 To build, run `python setup.py build_ex`.
 
