@@ -1,5 +1,3 @@
-from cpython.ref cimport PyObject
-
 import numpy as np
 cimport numpy as np  # for np.ndarray
 from libc.string cimport memcpy
@@ -53,3 +51,13 @@ def np2Mat2np(nparray):
     pyarr = Mat2np(m)
 
     return pyarr
+
+
+cdef class PyMat:
+    cdef Mat mat
+
+    def __cinit__(self, np_mat):
+        self.mat = np2Mat(np_mat)
+
+    def get_mat(self):
+        return Mat2np(self.mat)

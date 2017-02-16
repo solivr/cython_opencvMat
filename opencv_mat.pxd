@@ -1,3 +1,6 @@
+cimport numpy as np
+import numpy as np
+
 # For cv::Mat usage
 cdef extern from "core/core.hpp":
   cdef int  CV_WINDOW_AUTOSIZE
@@ -19,3 +22,5 @@ cdef extern from "Python.h":
     int PyBuffer_FillInfo(Py_buffer *view, PyObject *obj, void *buf, Py_ssize_t len, int readonly, int infoflags)
     enum:
         PyBUF_FULL_RO
+
+cdef Mat np2Mat(np.ndarray ary)
