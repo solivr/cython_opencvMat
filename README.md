@@ -2,7 +2,7 @@
 
 Implementation of cython wrapper to allow the convertion between a `numpy.array` and a `cv::Mat` and the other way arround (`cv::Mat` to `numpy.array`).
 
-To build, run `python setup.py build_ex`.
+To build, run `python setup.py build_ext --inplace`.
 
 Then try :
 ```python
