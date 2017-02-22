@@ -5,6 +5,7 @@ import numpy as np
 cdef extern from "core/core.hpp":
   cdef int  CV_WINDOW_AUTOSIZE
   cdef int CV_8UC3
+  cdef int CV_8UC1
 
 cdef extern from "core/core.hpp" namespace "cv":
   cdef cppclass Mat:
@@ -24,3 +25,5 @@ cdef extern from "Python.h":
         PyBUF_FULL_RO
 
 cdef Mat np2Mat(np.ndarray ary)
+
+cdef object Mat2np(Mat mat)
