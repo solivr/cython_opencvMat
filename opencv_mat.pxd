@@ -6,6 +6,8 @@ cdef extern from "core/core.hpp":
   cdef int  CV_WINDOW_AUTOSIZE
   cdef int CV_8UC3
   cdef int CV_8UC1
+  cdef int CV_8U
+  cdef int CV_32F
 
 cdef extern from "core/core.hpp" namespace "cv":
   cdef cppclass Mat:
@@ -15,6 +17,8 @@ cdef extern from "core/core.hpp" namespace "cv":
     int rows
     int cols
     int channels()
+    int depth()
+    size_t elemSize()
 
 # For Buffer usage
 cdef extern from "Python.h":

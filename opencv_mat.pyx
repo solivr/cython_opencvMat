@@ -42,18 +42,29 @@ cdef object Mat2np(Mat m):
     # Create buffer to transfer data from m.data
     cdef Py_buffer buf_info
     # Define the size / len of data
-    cdef size_t len = m.rows*m.cols*m.channels()*sizeof(CV_8UC3)
+    cdef size_t len = m.rows*m.cols*m.elemSize()#m.channels()*sizeof(CV_8UC3)
     # Fill buffer
     PyBuffer_FillInfo(&buf_info, NULL, m.data, len, 1, PyBUF_FULL_RO)
     # Get Pyobject from buffer data
     Pydata  = PyMemoryView_FromBuffer(&buf_info)
 
     # Create ndarray with data
-    shape_array = (m.rows, m.cols, m.channels())
-    ary = np.ndarray(shape=shape_array, buffer=Pydata, order='c', dtype=np.uint8)
+    # the dimension of the output array is 2 if the image is grayscale
+    if m.channels() >1 :
+        shape_array = (m.rows, m.cols, m.channels())
+    else:
+        shape_array = (m.rows, m.cols)
 
-    # BGR -> RGB
-    ary = np.dstack((ary[...,2], ary[...,1], ary[...,0]))
+    if m.depth() == CV_32F :
+        ary = np.ndarray(shape=shape_array, buffer=Pydata, order='c', dtype=np.float32)
+    else :
+    #8-bit image
+        ary = np.ndarray(shape=shape_array, buffer=Pydata, order='c', dtype=np.uint8)
+    
+    if m.channels() == 3:
+        # BGR -> RGB
+        ary = np.dstack((ary[...,2], ary[...,1], ary[...,0]))
+
     # Convert to numpy array
     pyarr = np.asarray(ary)
     return pyarr
