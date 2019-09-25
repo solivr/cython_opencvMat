@@ -30,12 +30,35 @@ cdef Mat np2Mat2D(np.ndarray ary):
     memcpy(m.data, im_buff, r*c)
     return m
 
+cdef Mat np2Mat2D_F32(np.ndarray ary):
+    assert ary.ndim==2 , "ASSERT::1 channel grayscale only!!"
+    assert ary.dtype==np.float32, "ASSERT dtype=float32"
+
+    cdef np.ndarray[np.float32_t, ndim=2, mode ='c'] np_buff = np.ascontiguousarray(ary, dtype=np.float32)
+    cdef float* im_buff = <float*> np_buff.data
+    cdef int r = ary.shape[0]
+    cdef int c = ary.shape[1]
+    cdef Mat m
+    m.create(r, c, CV_32FC1)
+    memcpy(m.data, im_buff, r*c*sizeof(float)) # 4 is the size of 
+    return m
+
+def npto32ftonp(nparr):
+    assert nparr.dtype == np.float32, "array dtype must be float32"
+    return Mat2np(np2Mat2D_F32(nparr))
 
 cdef Mat np2Mat(np.ndarray ary):
+    cdef Mat out
     if ary.ndim == 2:
-        return np2Mat2D(ary)
+        if ary.dtype == np.float32:
+            out = np2Mat2D_F32(ary)
+        elif ary.dtype == np.uint8:
+            out = np2Mat2D(ary)
+        else:
+            raise TypeError("array data type is not valid")
     elif ary.ndim == 3:
-        return np2Mat3D(ary)
+        out = np2Mat3D(ary)
+    return out
 
 
 cdef object Mat2np(Mat m):
